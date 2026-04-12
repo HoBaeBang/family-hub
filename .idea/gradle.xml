@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/monolith" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/monolith" />
+            <option value="$PROJECT_DIR$/monolith/app-api" />
+            <option value="$PROJECT_DIR$/monolith/app-batch" />
+            <option value="$PROJECT_DIR$/monolith/core-db" />
+            <option value="$PROJECT_DIR$/monolith/core-domain" />
+            <option value="$PROJECT_DIR$/monolith/core-kafka" />
+            <option value="$PROJECT_DIR$/monolith/core-mongo" />
+            <option value="$PROJECT_DIR$/monolith/core-redis" />
+            <option value="$PROJECT_DIR$/monolith/support-logging" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
