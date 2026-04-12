@@ -3,6 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/family-hub.iml" filepath="$PROJECT_DIR$/.idea/family-hub.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-api/family-hub-monolith.app-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/app-api/family-hub-monolith.app-api.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-db/family-hub-monolith.core-db.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-db/family-hub-monolith.core-db.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-domain/family-hub-monolith.core-domain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-domain/family-hub-monolith.core-domain.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-kafka/family-hub-monolith.core-kafka.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-kafka/family-hub-monolith.core-kafka.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-mongo/family-hub-monolith.core-mongo.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-mongo/family-hub-monolith.core-mongo.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-redis/family-hub-monolith.core-redis.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-redis/family-hub-monolith.core-redis.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/support-logging/family-hub-monolith.support-logging.main.iml" filepath="$PROJECT_DIR$/.idea/modules/support-logging/family-hub-monolith.support-logging.main.iml" />
     </modules>
   </component>
 </project>

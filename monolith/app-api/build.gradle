@@ -1,0 +1,21 @@
+plugins {
+    alias(libs.plugins.spring.boot)
+}
+
+dependencies {
+    implementation project(':core-domain')
+    implementation project(':core-db')
+    implementation project(':core-mongo')
+    implementation project(':core-redis')
+    implementation project(':core-kafka')
+    implementation project(':support-logging')
+
+    implementation libs.spring.boot.starter.web
+    implementation libs.spring.boot.starter.security
+    implementation libs.spring.boot.starter.validation
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation 'com.h2database:h2'
+}
