@@ -87,3 +87,5 @@ yarn-error.log*
 # Claude Code 작업 파일 (브레인스토밍/계획서)
 # ============================
 docs/superpowers/
+
+.omc/
