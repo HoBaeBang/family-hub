@@ -1,0 +1,7 @@
+dependencies {
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation 'jakarta.persistence:jakarta.persistence-api'
+    implementation 'jakarta.validation:jakarta.validation-api'
+}
