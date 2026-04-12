@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: family-hub-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: monolith-api
+              uri: http://localhost:8080
+              predicates:
+                - Path=/api/v1/auth/**, /api/v1/workspaces/**, /api/v1/projects/**, /api/v1/issues/**, /api/v1/sprints/**
+
+server:
+  port: 8090

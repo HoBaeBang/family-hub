@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: family-hub-batch
+
+server:
+  port: 8081

@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/family-hub.iml" filepath="$PROJECT_DIR$/.idea/family-hub.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/family-hub-gateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/family-hub-gateway.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-api/family-hub-monolith.app-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app-api/family-hub-monolith.app-api.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-api/family-hub-monolith.app-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/app-api/family-hub-monolith.app-api.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-batch/family-hub-monolith.app-batch.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app-batch/family-hub-monolith.app-batch.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-db/family-hub-monolith.core-db.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-db/family-hub-monolith.core-db.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-domain/family-hub-monolith.core-domain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-domain/family-hub-monolith.core-domain.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-kafka/family-hub-monolith.core-kafka.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-kafka/family-hub-monolith.core-kafka.main.iml" />

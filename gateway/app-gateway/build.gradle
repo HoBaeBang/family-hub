@@ -1,0 +1,34 @@
+plugins {
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+    id 'java'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.13"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.0.2"
+    }
+}
+
+dependencies {
+    implementation libs.spring.cloud.gateway
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation libs.spring.boot.starter.test
+}
+
+test {
+    useJUnitPlatform()
+}
