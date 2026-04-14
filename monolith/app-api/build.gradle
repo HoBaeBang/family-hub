@@ -14,6 +14,11 @@ dependencies {
     implementation libs.spring.boot.starter.security
     implementation libs.spring.boot.starter.validation
 
+    //jwt
+    implementation libs.jjwt.api
+    runtimeOnly libs.jjwt.impl
+    runtimeOnly libs.jjwt.jackson
+
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 

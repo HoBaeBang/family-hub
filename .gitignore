@@ -89,3 +89,6 @@ yarn-error.log*
 docs/superpowers/
 
 .omc/
+
+# 개인 key 제외
+**/keys/private.pem
