@@ -13,6 +13,7 @@ dependencies {
     implementation libs.spring.boot.starter.web
     implementation libs.spring.boot.starter.security
     implementation libs.spring.boot.starter.validation
+    implementation libs.spring.boot.starter.data.jpa
 
     //jwt
     implementation libs.jjwt.api
@@ -22,5 +23,6 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
+    testImplementation libs.spring.boot.starter.data.redis
     testImplementation 'com.h2database:h2'
 }
