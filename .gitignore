@@ -92,3 +92,5 @@ docs/superpowers/
 
 # 개인 key 제외
 **/keys/private.pem
+
+.idea/
