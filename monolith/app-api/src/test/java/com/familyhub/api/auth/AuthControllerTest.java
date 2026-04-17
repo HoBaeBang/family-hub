@@ -1,16 +1,19 @@
 package com.familyhub.api.auth;
 
 import com.familyhub.api.auth.dto.*;
+import com.familyhub.api.auth.oauth2.OAuth2UserService;
 import com.familyhub.api.config.SecurityConfig;
 import com.familyhub.api.exception.AppException;
 import com.familyhub.api.exception.ErrorCode;
 import com.familyhub.api.exception.GlobalExceptionHandler;
+import com.familyhub.redis.auth.TempCodeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AuthController.class)
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
+@TestPropertySource(properties = "oauth2.redirect-uri=http://localhost:3000/auth/callback")
 class AuthControllerTest {
 
     @Autowired
@@ -30,6 +34,10 @@ class AuthControllerTest {
     ObjectMapper objectMapper;
     @MockitoBean
     AuthService authService;
+    @MockitoBean
+    OAuth2UserService oAuth2UserService;
+    @MockitoBean
+    TempCodeRepository tempCodeRepository;
 
     @Test
     void signup_returns_201_with_memberId_and_email() throws Exception {
@@ -88,5 +96,26 @@ class AuthControllerTest {
                         .header("Authorization", "Bearer access.token")
                         .content(objectMapper.writeValueAsString(new LogoutRequest("refresh-uuid"))))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void token_returns_200_with_tokens_when_code_valid() throws Exception {
+        when(authService.exchangeToken(any())).thenReturn(new TokenResponse("access.token", "refresh-uuid", 900));
+
+        mockMvc.perform(get("/api/v1/auth/token")
+                        .param("code", "valid-code"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").value("access.token"))
+                .andExpect(jsonPath("$.refreshToken").value("refresh-uuid"));
+    }
+
+    @Test
+    void token_returns_401_when_code_invalid() throws Exception {
+        when(authService.exchangeToken(any())).thenThrow(new AppException(ErrorCode.INVALID_AUTH_CODE));
+
+        mockMvc.perform(get("/api/v1/auth/token")
+                        .param("code", "expired-code"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("INVALID_AUTH_CODE"));
     }
 }
