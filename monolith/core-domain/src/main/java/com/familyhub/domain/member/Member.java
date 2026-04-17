@@ -19,7 +19,7 @@ public class Member {
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Column(nullable = false, length = 50)
@@ -36,6 +36,16 @@ public class Member {
         Member m = new Member();
         m.email = email;
         m.password = password;
+        m.name = name;
+        m.role = MemberRole.USER;
+        m.createdAt = LocalDateTime.now();
+        return m;
+    }
+
+    public static Member createOAuth(String email, String name) {
+        Member m = new Member();
+        m.email = email;
+        m.password = null;
         m.name = name;
         m.role = MemberRole.USER;
         m.createdAt = LocalDateTime.now();

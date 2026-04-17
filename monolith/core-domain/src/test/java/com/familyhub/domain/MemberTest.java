@@ -16,4 +16,15 @@ class MemberTest {
         assertThat(member.getRole()).isEqualTo(MemberRole.USER);
         assertThat(member.getCreatedAt()).isNotNull();
     }
+
+    @Test
+    void createOAuth_sets_fields_with_null_password() {
+        Member member = Member.createOAuth("google@test.com", "구글유저");
+
+        assertThat(member.getEmail()).isEqualTo("google@test.com");
+        assertThat(member.getName()).isEqualTo("구글유저");
+        assertThat(member.getPassword()).isNull();
+        assertThat(member.getRole()).isEqualTo(MemberRole.USER);
+        assertThat(member.getCreatedAt()).isNotNull();
+    }
 }
