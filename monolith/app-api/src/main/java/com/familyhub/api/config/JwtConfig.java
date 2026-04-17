@@ -2,6 +2,7 @@ package com.familyhub.api.config;
 
 import com.familyhub.api.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -18,6 +19,7 @@ import java.util.Base64;
 public class JwtConfig {
 
     @Bean
+    @ConditionalOnMissingBean(JwtProvider.class)
     public JwtProvider jwtProvider(
             @Value("${jwt.private-key-path}") Resource privateKeyResource,
             @Value("${jwt.public-key-path}")  Resource publicKeyResource
