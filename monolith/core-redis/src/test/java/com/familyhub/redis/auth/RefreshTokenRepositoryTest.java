@@ -21,7 +21,7 @@ class RefreshTokenRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        when(redisTemplate.opsForValue()).thenReturn(valueOps);
+        lenient().when(redisTemplate.opsForValue()).thenReturn(valueOps);
         repository = new RefreshTokenRepository(redisTemplate);
     }
 
