@@ -96,4 +96,34 @@ class JwtAuthGlobalFilterTest {
 
         verify(chain).filter(exchange);
     }
+
+    @Test
+    void token_path_bypasses_jwt_verification() {
+        var exchange = MockServerWebExchange.from(
+            MockServerHttpRequest.get("/api/v1/auth/token").build()
+        );
+        filter.filter(exchange, chain).block();
+
+        verify(jwtVerifier, never()).verify(any());
+    }
+
+    @Test
+    void oauth2_authorization_path_bypasses_jwt_verification() {
+        var exchange = MockServerWebExchange.from(
+            MockServerHttpRequest.get("/api/v1/auth/oauth2/authorization/google").build()
+        );
+        filter.filter(exchange, chain).block();
+
+        verify(jwtVerifier, never()).verify(any());
+    }
+
+    @Test
+    void oauth2_callback_path_bypasses_jwt_verification() {
+        var exchange = MockServerWebExchange.from(
+            MockServerHttpRequest.get("/api/v1/auth/oauth2/callback/google").build()
+        );
+        filter.filter(exchange, chain).block();
+
+        verify(jwtVerifier, never()).verify(any());
+    }
 }
