@@ -7,6 +7,7 @@ import com.familyhub.api.security.JwtProvider;
 import com.familyhub.db.member.MemberJpaRepository;
 import com.familyhub.domain.member.Member;
 import com.familyhub.redis.auth.RefreshTokenRepository;
+import com.familyhub.redis.auth.TempCodeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,6 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,6 +35,8 @@ class AuthServiceTest {
     JwtProvider jwtProvider;
     @Mock
     PasswordEncoder passwordEncoder;
+    @Mock
+    TempCodeRepository tempCodeRepository;
     @InjectMocks
     AuthService authService;
 
@@ -96,5 +100,29 @@ class AuthServiceTest {
         var req = new LogoutRequest("token-id");
         authService.logout(req);
         verify(refreshTokenRepository).delete("token-id");
+    }
+
+    @Test
+    void exchangeToken_returns_tokens_when_code_valid() {
+        var req = new TempCodeRequest("valid-code");
+        when(tempCodeRepository.findAndDelete("valid-code")).thenReturn(Optional.of("42"));
+        Member member = Member.create("test@test.com", "encoded", "홍길동");
+        when(memberRepository.findById(42L)).thenReturn(Optional.of(member));
+        when(jwtProvider.generateAccessToken(any(), any())).thenReturn("access.token");
+
+        TokenResponse response = authService.exchangeToken(req);
+
+        assertThat(response.accessToken()).isEqualTo("access.token");
+        verify(refreshTokenRepository).save(any(), eq("42"));
+    }
+
+    @Test
+    void exchangeToken_throws_INVALID_AUTH_CODE_when_code_not_found() {
+        var req = new TempCodeRequest("expired-code");
+        when(tempCodeRepository.findAndDelete("expired-code")).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> authService.exchangeToken(req))
+                .isInstanceOf(AppException.class)
+                .matches(e -> ((AppException) e).getErrorCode() == ErrorCode.INVALID_AUTH_CODE);
     }
 }

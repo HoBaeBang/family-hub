@@ -7,6 +7,7 @@ import com.familyhub.api.security.JwtProvider;
 import com.familyhub.db.member.MemberJpaRepository;
 import com.familyhub.domain.member.Member;
 import com.familyhub.redis.auth.RefreshTokenRepository;
+import com.familyhub.redis.auth.TempCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class AuthService {
 
     private final MemberJpaRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final TempCodeRepository tempCodeRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
 
@@ -67,5 +69,19 @@ public class AuthService {
 
     public void logout(LogoutRequest request) {
         refreshTokenRepository.delete(request.refreshToken());
+    }
+
+    public TokenResponse exchangeToken(TempCodeRequest request) {
+        String memberId = tempCodeRepository.findAndDelete(request.code())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_AUTH_CODE));
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_CREDENTIALS));
+
+        String accessToken = jwtProvider.generateAccessToken(member.getId(), member.getEmail());
+        String tokenId = UUID.randomUUID().toString();
+        refreshTokenRepository.save(tokenId, memberId);
+
+        return new TokenResponse(accessToken, tokenId, 900);
     }
 }
