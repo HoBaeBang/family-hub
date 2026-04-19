@@ -33,13 +33,22 @@ public class Member {
     private LocalDateTime createdAt;
 
     public static Member create(String email, String password, String name) {
-        Member m = new Member();
-        m.email = email;
-        m.password = password;
-        m.name = name;
-        m.role = MemberRole.USER;
-        m.createdAt = LocalDateTime.now();
-        return m;
+        Member member = new Member();
+        member.email = email;
+        member.password = password;
+        member.name = name;
+        member.role = MemberRole.USER;
+        member.createdAt = LocalDateTime.now();
+        return member;
+    }
+
+    public static Member createOAuth(String email, String name) {
+        Member member = new Member();
+        member.email = email;
+        member.name = name;
+        member.role = MemberRole.USER;
+        member.createdAt = LocalDateTime.now();
+        return member;
     }
 
     public static Member createOAuth(String email, String name) {
