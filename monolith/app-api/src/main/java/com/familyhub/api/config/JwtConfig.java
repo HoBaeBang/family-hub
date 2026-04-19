@@ -19,7 +19,7 @@ import java.util.Base64;
 public class JwtConfig {
 
     @Bean
-    @ConditionalOnMissingBean(JwtProvider.class)
+    @ConditionalOnMissingBean
     public JwtProvider jwtProvider(
             @Value("${jwt.private-key-path}") Resource privateKeyResource,
             @Value("${jwt.public-key-path}")  Resource publicKeyResource

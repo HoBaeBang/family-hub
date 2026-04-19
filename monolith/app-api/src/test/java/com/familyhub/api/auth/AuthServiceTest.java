@@ -39,6 +39,8 @@ class AuthServiceTest {
     TempCodeRepository tempCodeRepository;
     @InjectMocks
     AuthService authService;
+    @Mock
+    TempCodeRepository tempCodeRepository;
 
     @Test
     void signup_saves_member_and_returns_response() {

@@ -1,7 +1,7 @@
 package com.familyhub.api.auth;
 
 import com.familyhub.api.auth.dto.*;
-import com.familyhub.api.auth.oauth2.OAuth2UserService;
+import com.familyhub.api.auth.oauth2.CustomOAuth2UserService;
 import com.familyhub.api.config.SecurityConfig;
 import com.familyhub.api.exception.AppException;
 import com.familyhub.api.exception.ErrorCode;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AuthController.class)
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
-@TestPropertySource(properties = "oauth2.redirect-uri=http://localhost:3000/auth/callback")
 class AuthControllerTest {
 
     @Autowired
@@ -35,9 +34,11 @@ class AuthControllerTest {
     @MockitoBean
     AuthService authService;
     @MockitoBean
-    OAuth2UserService oAuth2UserService;
+    CustomOAuth2UserService oAuth2UserService;
     @MockitoBean
     TempCodeRepository tempCodeRepository;
+    @MockitoBean
+    ClientRegistrationRepository clientRegistrationRepository;
 
     @Test
     void signup_returns_201_with_memberId_and_email() throws Exception {

@@ -1,7 +1,7 @@
 package com.familyhub.api.config;
 
 import com.familyhub.api.auth.oauth2.OAuth2SuccessHandler;
-import com.familyhub.api.auth.oauth2.OAuth2UserService;
+import com.familyhub.api.auth.oauth2.CustomOAuth2UserService;
 import com.familyhub.redis.auth.TempCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final OAuth2UserService oAuth2UserService;
+    private final CustomOAuth2UserService oAuth2UserService;
     private final TempCodeRepository tempCodeRepository;
 
     @Value("${oauth2.redirect-uri}")
@@ -29,20 +29,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-            .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-            .formLogin(AbstractHttpConfigurer::disable)
-            .httpBasic(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-            .oauth2Login(oauth2 -> oauth2
-                .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
-                .successHandler(new OAuth2SuccessHandler(tempCodeRepository, oauth2RedirectUri))
-                .authorizationEndpoint(auth -> auth
-                    .baseUri("/api/v1/auth/oauth2/authorization"))
-                .redirectionEndpoint(redirect -> redirect
-                    .baseUri("/api/v1/auth/oauth2/callback/*"))
-            )
-            .build();
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
+                        .successHandler(new OAuth2SuccessHandler(tempCodeRepository, oauth2RedirectUri))
+                        .authorizationEndpoint(auth -> auth
+                                .baseUri("/api/v1/auth/oauth2/authorization"))
+                        .redirectionEndpoint(redirect -> redirect
+                                .baseUri("/api/v1/auth/oauth2/callback/*"))
+                )
+                .build();
     }
 
     @Bean

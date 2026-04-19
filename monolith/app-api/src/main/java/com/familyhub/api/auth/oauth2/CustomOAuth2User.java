@@ -1,24 +1,20 @@
 package com.familyhub.api.auth.oauth2;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
+@AllArgsConstructor
 public class CustomOAuth2User implements OAuth2User {
 
     private final OAuth2User delegate;
-    private final Long memberId;
-
-    public CustomOAuth2User(OAuth2User delegate, Long memberId) {
-        this.delegate = delegate;
-        this.memberId = memberId;
-    }
-
-    public Long getMemberId() {
-        return memberId;
-    }
+    @Getter private final Long memberId;
 
     @Override
     public Map<String, Object> getAttributes() {
