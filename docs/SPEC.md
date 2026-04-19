@@ -181,6 +181,38 @@ Refresh Token — 7일, Redis + HttpOnly Cookie
 - .../auth/calendar                (Calendar Sync 서비스용)
 ```
 
+**AUTH-03 Google OAuth2 소셜 로그인 상세**
+
+인증 흐름:
+```
+1. 프론트엔드 → GET /oauth2/authorization/google (Spring Security가 Google로 리다이렉트)
+2. Google 인증 완료 → GET /login/oauth2/code/google (콜백)
+3. CustomOAuth2UserService: 이메일로 Member 조회 → 없으면 신규 생성, user_providers 연결
+4. OAuth2SuccessHandler: Redis에 TempCode(30초 TTL) 저장 → 프론트로 리다이렉트
+   리다이렉트 URL: {oauth2.redirect-uri}?code={tempCode}
+5. 프론트엔드 → GET /api/v1/auth/token?code={tempCode}
+6. AuthService.exchangeToken(): Redis에서 TempCode 조회 후 삭제 → JWT 발급
+```
+
+Member 통합 정책:
+- 동일 이메일의 이메일 가입 유저와 OAuth 유저는 같은 `Member`로 통합
+- `user_providers` 테이블로 소셜 연결 정보(provider_type, provider_id) 별도 관리
+- OAuth 가입 유저는 password = NULL
+
+API 엔드포인트:
+| 메서드 | URL | 설명 | 응답 |
+|--------|-----|------|------|
+| GET | `/api/v1/auth/token?code={code}` | TempCode → JWT 교환 | 200 `TokenResponse` |
+
+에러 케이스:
+| 상황 | HTTP | 코드 |
+|------|------|------|
+| code 만료 또는 없음 | 401 | `INVALID_AUTH_CODE` |
+
+세션 저장소:
+- OAuth2 인증 세션 상태(state, nonce)는 Redis에 저장 (spring-session-data-redis)
+- 향후 인증 서버 분리 시 세션 공유 가능
+
 ---
 
 ### 4.2 Workspace — Monolith
