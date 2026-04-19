@@ -8,27 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @EntityScan("com.familyhub.domain")
-class UserProviderJpaRepositoryTest {
+public class UserProviderJpaRepositoryTest {
 
-    @Autowired UserProviderJpaRepository userProviderRepository;
-    @Autowired MemberJpaRepository memberRepository;
+    @Autowired
+    UserProviderJpaRepository userProviderJpaRepository;
+    @Autowired
+    MemberJpaRepository memberJpaRepository;
 
     @Test
-    void existsByProviderTypeAndProviderId_returns_true_when_exists() {
-        Member member = memberRepository.save(Member.createOAuth("g@test.com", "구글유저"));
-        userProviderRepository.save(UserProvider.create(member, ProviderType.GOOGLE, "google-sub-123"));
+    void existsByProviderTypeAndProviderId_return_true_when_exists() {
+        Member member = memberJpaRepository.save(Member.createOAuth("g@test.com", "구글 유저"));
+        userProviderJpaRepository.save(UserProvider.create(member, ProviderType.GOOGLE, "google-sub-123"));
 
-        assertThat(userProviderRepository.existsByProviderTypeAndProviderId(
-                ProviderType.GOOGLE, "google-sub-123")).isTrue();
+        assertThat(userProviderJpaRepository.existsByProviderTypeAndProviderId(
+                ProviderType.GOOGLE, "google-sub-123"
+        )).isTrue();
     }
-
     @Test
     void existsByProviderTypeAndProviderId_returns_false_when_not_exists() {
-        assertThat(userProviderRepository.existsByProviderTypeAndProviderId(
+        assertThat(userProviderJpaRepository.existsByProviderTypeAndProviderId(
                 ProviderType.GOOGLE, "nobody")).isFalse();
     }
 }
