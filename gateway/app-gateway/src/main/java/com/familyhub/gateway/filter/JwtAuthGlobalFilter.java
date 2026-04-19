@@ -18,15 +18,19 @@ public class JwtAuthGlobalFilter implements GlobalFilter, Ordered {
     private static final List<String> SKIP_PATHS = List.of(
             "/api/v1/auth/signup",
             "/api/v1/auth/login",
-            "/api/v1/auth/refresh"
+            "/api/v1/auth/refresh",
+            "/api/v1/auth/token"
     );
+
+    private static final String OAUTH2_PATH_PREFIX = "/api/v1/auth/oauth2/";
 
     private final JwtVerifier jwtVerifier;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getPath().value();
-        if (SKIP_PATHS.contains(path)) {
+
+        if (SKIP_PATHS.contains(path) || path.startsWith(OAUTH2_PATH_PREFIX)) {
             return chain.filter(exchange);
         }
 
