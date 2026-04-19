@@ -11,15 +11,14 @@ import java.util.UUID;
 @Repository
 @RequiredArgsConstructor
 public class TempCodeRepository {
-
     private static final String PREFIX = "auth:temp_code:";
-    private static final Duration TTL   = Duration.ofSeconds(30);
+    private static final Duration TTL = Duration.ofSeconds(30);
 
     private final StringRedisTemplate redisTemplate;
 
-    public String save(String memberId) {
+    public String save(String memberID) {
         String code = UUID.randomUUID().toString();
-        redisTemplate.opsForValue().set(PREFIX + code, memberId, TTL);
+        redisTemplate.opsForValue().set(PREFIX + code, memberID, TTL);
         return code;
     }
 
